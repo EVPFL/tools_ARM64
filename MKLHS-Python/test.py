@@ -1,6 +1,4 @@
 from MKLHS import *
-from tqdm import tqdm
-
 
 S = 2
 L = 2

@@ -13,10 +13,12 @@ ext_modules = [
     Extension(
         'LHH',
         ['src/wrapper.cpp'],
-        include_dirs=['/usr/include/python3.10', 'pybind11/include', '/usr/local/include', 'LHH/src'],
+        # include_dirs=['/usr/include/python3.10', 'pybind11/include', '/usr/local/include', 'LHH/src'],
+        include_dirs=['/usr/include/python3.10', 'pybind11/include', 'LHH/src'],
         language='c++',
         extra_compile_args=cpp_args,
         extra_objects=['/usr/local/lib/libcrypto.a', '/usr/local/lib/libssl.a', './LHH/lib/libLHH.a'], # both lib need compiled with -fPIC
+        # extra_objects=['./LHH/lib/libLHH.a'], 
     ),
 ]
 

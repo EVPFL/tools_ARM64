@@ -507,6 +507,7 @@ class DataIsland:
         if weight:
             weight_zz = ZZ( [weight] )
             ring.multByConstAndEqual(dec_part_coeffs, weight_zz, q)
+        # ring.addGaussAndEqual(dec_part_coeffs, qQ)
 
         dec_part_coeffs_mlist = []
         for j in range(N):

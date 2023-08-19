@@ -1,5 +1,5 @@
-# MP-HEAAN-Python
-This is a Python wrapper for MP-HEAAN library.
+# MP-HEAAN-Python (ARM64 VERSION)
+This is a Python wrapper for MP-HEAAN library for ARM64.
 [MP-HEAAN](./MP-HEAAN) is a extension of HEAAN through the secret sharing of CKKS secret keys, to enable aggregation of homomorphic ciphertexts under multiple keys.
 [MP-HEAAN-Python] is a Python wrapper for MP-HEAAN library based on [HEAAN-Python](https://github.com/Huelse/HEAAN-Python).
 
@@ -10,116 +10,78 @@ This is a Python wrapper for MP-HEAAN library.
   [HEAAN-Python](https://github.com/Huelse/HEAAN-Python) is a Python wrapper for HEAAN library.
 
 
+##  build MP-HEAAN-Python and run the example
+  * ### Recommend: Clang++ (>= 10.0) or GNU G++ (>= 9.4), CMake (>= 3.16); Python 3.10; MAC OS (M1)
 
-## build MP-HEAAN-Python and run the example
-
-  Recommend: Clang++ (>= 10.0) or GNU G++ (>= 9.4), CMake (>= 3.16); Ububtu
-  ```shell
-  # pybind11
-  cd pybind11
-  mkdir build && cd build
-  (pip3 install pytest)
-  cmake ..
-  make
-  sudo make install
-
-  # gmp-6.2.0
-  sudo apt-get install m4
-  cd gmp-6.2.0
-  ./configure SHARED=on
-  make
-  make check
-  sudo make install
-
-  # NTL-11.4.3
-  cd ntl-11.4.3/src
-  ./configure SHERED=on
-  make
-  make check
-  sudo make install
-    # Q&A
-    problem: install ntl error: gmp version mismatch 
-      solve: cd gmp; sudo make uninstall; and install right version (gmp-6.2.0+NTL-11.4.3)
-
-  # MP-HEAAN
-  cd MP-HEAAN/lib
-  make all
-
-  # MP-HEAAN-Python (global install)
-  python setup.py build_ext -i
-  sudo python setup.py install 
-
-  # test
-  python tests/test-basic.py
-  ```
-
-  * ### Q&A
-    problem: libntl.so.43: no find
-    solve: 
-    ```shell
-    export LD_LIBRARY_PATH=/path/to/extends/lib
-    sudo vim /etc/ld.so.conf 
-      add `/path/to/extends/lib` to `/etc/ld.so.conf`
-    sudo ldconfig
+  * ### install requirements.txt (python libararies, including pybind11, numpy, etc.)
+    ``` shell
+        python3.10 -m pip install -r requirements.txt
     ```
 
-##  build MP-HEAAN-Python for MAC OS (M1)
-  ```shell
-  # pybind11
-  python3.10 -m pip install -r requirements.txt
+  * ### install GMP and NTL
+    * Download links
+        GMP: https://gmplib.org/#DOWNLOAD
+        NTL: https://libntl.org/download.html
 
-  # gmp-6.2.1
-  tar zxvf ./gmp-6.2.1.tar.lz
-  cd gmp-6.2.1
-  ./configure SHARED=on
-  make
-  make check
-  sudo make install
+    * GMP-6.2.1 (https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz)
+    ``` shell
+        sudo apt-get install m4
 
-  # NTL-11.5.1
-  cd ntl-11.5.1/src
-  ./configure SHARED=on
-  make
-  make check
-  sudo make install (get '/usr/local/lib/libntl.dylib')
+        # tar -xf gmp-6.2.1.tar.xz
+        cd gmp-6.2.1
+        ./configure SHARED=on
+        make
+        make check #optional
+        sudo make install
+    ```
 
-  # modify src/wrapper.cpp
-    #include <malloc.h> -> #include <malloc/malloc.h>
-    malloc_usable_size -> malloc_size
+    * NTL-11.5.1 (https://libntl.org/ntl-11.5.1.tar.gz)
+    ``` shell
+        # tar -zxvf ntl-11.5.1.tar.gz
+        cd ntl-11.5.1/src
+        ./configure SHARED=on
+        make
+        make check #optional
+        sudo make install
+    ```
 
-  # modify setup.py
-    add: cfg_vars[key] = value.replace('x86_', 'arm')
-    '/usr/local/lib/libntl.so' -> '/usr/local/lib/libntl.dylib'
+  * ### compile MP-HEAAN-Python (global install)
+    ``` shell
+      python3.10 setup.py build_ext -i
+      sudo python3.10 setup.py install 
+    ```
 
-  # MP-HEAAN-Python (global install)
-  python3.10 setup.py build_ext -i
-  sudo python3.10 setup.py install 
+  * ### run the example
+    * basic test
+    ``` shell
+      python3.10 tests/test-basic.py
+    ```
 
-  # basic test
-  python3.10 tests/test-basic.py
-  ```
-  * ### Q&A
-    problem: python3.10, ntl-11.5.1 are adopted for arm64. (e.g., ld: illegal thread local variable reference to regular symbol ZN3NTL17NTLThreadPool_ptrE for architecture x86_64; error: linker command failed; )
-    solve: Do not using 'brew install ntl', if its python version is 3.8 which is not adopted for M1. 
+  * ### FAQ
+    * Problem: python3.10, ntl-11.5.1 are adopted for arm64. (e.g., ld: illegal thread local variable reference to regular symbol ZN3NTL17NTLThreadPool_ptrE for architecture x86_64; error: linker command failed; )
+      Solve: Do not using 'brew install ntl', if its python version is 3.8 which is not adopted for M1. 
+      
+    * Problem: install ntl error: gmp version mismatch 
+      Solve: cd gmp; sudo make uninstall; and install right version (gmp-6.2.1+NTL-11.5.1) 
 
 
 ## modify MP-HEAAN-Python and test the program
-```shell
-  # HEAAN (if modify HEAAN)
-  cd HEAAN/lib
-  make all
-  ## del HEAAN.so
-  #rm -r ./build
+* ### rebuild libHEAAN.a (if modify HEAAN)
+  ```shell
+    cd HEAAN/lib
+    make all
+  ```
   
-  # rebuild HEAAN-Python
-  #python3.10 setup.py build_ext -i
-  sudo python3.10 setup.py install
-  or
-  python3.10 rebuild.py
+* ### rebuild HEAAN-Python
+  * method 1: 
+    ```shell
+      sudo rm -r ./build
+      sudo python3.10 setup.py install
+    ```
+  * method 2: 
+    ```shell
+      python3.10 rebuild.py # change the passwd in rebuild.py
+    ```
 
-  # run test
-  python3.10 tests/test-basic.py
-
-```
 
 
