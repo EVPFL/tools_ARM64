@@ -14,7 +14,7 @@ combinations of data without needing to access the original data. This scheme  i
 
   * ### install pybind11
     ``` shell
-        python3。10 -m pip install -r requirements.txt
+        python3.10 -m pip install -r requirements.txt
     ```
 
   * ### compile libLHH.a
@@ -26,7 +26,7 @@ combinations of data without needing to access the original data. This scheme  i
   * ### compile LHH-Python (global install)
     ``` shell
         cd LHH-Python/
-        sudo python3 setup.py install
+        sudo python3.10 setup.py install
     ```
     
   * ### run the example
